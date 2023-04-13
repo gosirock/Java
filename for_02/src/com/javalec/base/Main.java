@@ -24,7 +24,6 @@ public class Main {
 		
 		
 		// 구구단 전체 출력
-		
 //		for(int dan = 2; dan <= 9; dan++) {
 //			System.out.println("-----" + dan + "단 -----");
 //				for(int num = 1; num <= 9; num ++) {
@@ -113,37 +112,36 @@ public class Main {
 		
 		// 앞뒤가 둘다 홀수면 출력제한
 		
-		for(int num = 1; num <= 9; num ++) {
-			for(int dan = 2; dan <= 9; dan ++) {
-				if((num % 2 == 1) && (dan % 2 == 1)) {
-					System.out.print("\t\t");
-				}else
-				System.out.print(dan + " x " + num + " = " + (num*dan) + "	"); 
-		}
-			System.out.println();
-		}
-		
-		// 결과값이 짝수이면 출력제한
-		
-		for(int num = 1; num <= 9; num ++) {
-			for(int dan = 2; dan <= 9; dan ++) {
-				if(num*dan % 2 == 1) {
-					System.out.print("\t\t");
-				}else
-				System.out.print(dan + " x " + num + " = " + (num*dan) + "	"); 
-		}
-			System.out.println();
-		}
-		
-		 //결과값이 짝수이면 출력제한2
-		
-		for(int num = 1; num <= 9; num ++) {
-			for(int dan = 2; dan <= 9; dan ++) {
-				System.out.print((num*dan % 2 == 1 ? "\t\t" : dan + " x " + num + " = " + num*dan + "	")); 
-		}
-			System.out.println();
-		}
-		
+//		for(int num = 1; num <= 9; num ++) {
+//			for(int dan = 2; dan <= 9; dan ++) {
+//				if((num % 2 == 1) && (dan % 2 == 1)) {
+//					System.out.print("\t\t");
+//				}else
+//				System.out.print(dan + " x " + num + " = " + (num*dan) + "	"); 
+//		}
+//			System.out.println();
+//		}
+//		
+//		// 결과값이 짝수이면 출력제한
+//		
+//		for(int num = 1; num <= 9; num ++) {
+//			for(int dan = 2; dan <= 9; dan ++) {
+//				if(num*dan % 2 == 1) {
+//					System.out.print("\t\t");
+//				}else
+//				System.out.print(dan + " x " + num + " = " + (num*dan) + "	"); 
+//		}
+//			System.out.println();
+//		}
+//		
+//		 //결과값이 짝수이면 출력제한2
+//		
+//		for(int num = 1; num <= 9; num ++) {
+//			for(int dan = 2; dan <= 9; dan ++) {
+//				System.out.print((num*dan % 2 == 1 ? "\t\t" : dan + " x " + num + " = " + num*dan + "	")); 
+//		}
+//			System.out.println();
+//		}
 		
 		
 		}
