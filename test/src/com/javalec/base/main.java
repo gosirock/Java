@@ -7,6 +7,8 @@ public class main {
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		
+//		ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 입력값 +3 단까지 출력하
 //		int number = 0;
 //		
 //		System.out.print("Input you number : ");														// 번호입력받기
@@ -21,8 +23,8 @@ public class main {
 //				System.out.print(dan + " x " + num + " = " + String.format("%2s",num*dan) + "	");		// 자리수 정렬 및 계산
 //			}System.out.println();																		// 띄우기
 //	}	
-	
-	// if문이 있으면 없으면 좋고 똑같은게 있으면 없애는게 좋고	
+
+// if문이 있으면 없으면 좋고 똑같은게 있으면 없애는게 좋고	
 		
 //	ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 10의 10의0승 ~ 10의10승까지의 제곱승을 구하라. ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 		
@@ -218,40 +220,40 @@ public class main {
 //		학생수가 4명이고 과목이 3과목일 경우의 점수 합계와 평균 구하기 기능 추가
 		
 	
-	int[] Korean = new int[4];
-	int[] English = new int[4];
-	int[] Mathematics = new int[4];
-	int[] tot = new int[4];
-	double[] avg = new double[4];
-	
-	System.out.println("Korean의 성적을 입력 : ");
-	for (int i = 0; i < Korean.length; i++) {
-		System.out.print("No"+ (i+1) + "의 성적은 :");
-		Korean[i] = scanner.nextInt();
-		tot[i] += Korean[i];
-	}
-	System.out.println("English의 성적을 입력 : ");
-	for (int i = 0; i < English.length; i++) {
-		System.out.print("No"+ (i+1) + "의 성적은 :");
-		English[i] = scanner.nextInt();
-		tot[i] += English[i];
-	}
-	System.out.println("Mathematics의 성적을 입력 : ");
-	for (int i = 0; i < Mathematics.length; i++) {
-		System.out.print("No"+ (i+1) + "의 성적은 :");
-		Mathematics[i] = scanner.nextInt();
-		tot[i] += Mathematics[i];
-		avg[i] += tot[i] / 3.0;
-	}
-	
-	// 출력
-	System.out.println("\tKorean\t\tEnglish\t\tMathematics\tTotal\t\tAverage");
-	
-	for(int i = 0; i < 4; i++) {
-		for(int k = i; k < i+1; k++) {
-			System.out.print("No" + (k+1) + "\t  " + Korean[k] + "\t\t  " + English[k] + "\t\t     " + Mathematics[k] + "\t\t  " + tot[k] + "\t\t " + avg[k]);
-		}System.out.println();
-	}
+//	int[] Korean = new int[4];
+//	int[] English = new int[4];
+//	int[] Mathematics = new int[4];
+//	int[] tot = new int[4];
+//	double[] avg = new double[4];
+//	
+//	System.out.println("Korean의 성적을 입력 : ");
+//	for (int i = 0; i < Korean.length; i++) {
+//		System.out.print("No"+ (i+1) + "의 성적은 :");
+//		Korean[i] = scanner.nextInt();
+//		tot[i] += Korean[i];
+//	}
+//	System.out.println("English의 성적을 입력 : ");
+//	for (int i = 0; i < English.length; i++) {
+//		System.out.print("No"+ (i+1) + "의 성적은 :");
+//		English[i] = scanner.nextInt();
+//		tot[i] += English[i];
+//	}
+//	System.out.println("Mathematics의 성적을 입력 : ");
+//	for (int i = 0; i < Mathematics.length; i++) {
+//		System.out.print("No"+ (i+1) + "의 성적은 :");
+//		Mathematics[i] = scanner.nextInt();
+//		tot[i] += Mathematics[i];
+//		avg[i] += tot[i] / 3.0;
+//	}
+//	
+//	// 출력
+//	System.out.println("\tKorean\t\tEnglish\t\tMathematics\tTotal\t\tAverage");
+//	
+//	for(int i = 0; i < 4; i++) {
+//		for(int k = i; k < i+1; k++) {
+//			System.out.print("No" + (k+1) + "\t  " + Korean[k] + "\t\t  " + English[k] + "\t\t     " + Mathematics[k] + "\t\t  " + tot[k] + "\t\t " + avg[k]);
+//		}System.out.println();
+//	}
 	
 	
 	
