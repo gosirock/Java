@@ -308,7 +308,7 @@ public class Main extends JFrame {
 	}
 	// --- Functions
 	
-	private void tableInit() {
+	private void tableInit() {		// 화면의 Table 정리
 		Outer_Table.addColumn("순서");
 		Outer_Table.addColumn("이름");
 		Outer_Table.addColumn("전화번호");
@@ -341,11 +341,9 @@ public class Main extends JFrame {
 		col = Inner_Table.getColumnModel().getColumn(vColIndex);
 		width = 200;	// 폭 설정
 		col.setPreferredWidth(width);
-		
-		
-		
 	}
 	
+	// DB의 Table에서 화면의 Table에 들어갈 정보 가져오기
 	private void searchAction() {
 		String whereDefault = "select seqno, name, telno, relation from userinfo";
 		
@@ -354,7 +352,7 @@ public class Main extends JFrame {
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			Statement stmt_mysql = conn_mysql.createStatement();
 			
-			ResultSet rs = stmt_mysql.executeQuery(whereDefault );
+			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
 			
 			while(rs.next()) {	// 읽을데이터가 없으면 빠진다
 				String[] qTxt = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)}; //하나의 로우 한번에 넣어야되서 배열필

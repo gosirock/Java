@@ -20,10 +20,19 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main extends JFrame {
 
@@ -54,10 +63,10 @@ public class Main extends JFrame {
 	private JLabel lblCount;
 	private JTextField tfCount;
 	
-	// table
+	// Table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
 	
-	
+	String message = "";
 	
 	
 	
@@ -91,6 +100,7 @@ public class Main extends JFrame {
 			public void windowOpened(WindowEvent e) {
 				tableInit();	// 첫화면 초기화
 				serchActeion(); // 데이터 불러오기
+				screenPartition();
 			}
 		});
 		setTitle("주소록");
@@ -128,6 +138,11 @@ public class Main extends JFrame {
 	private JRadioButton getRbInsert() {
 		if (rbInsert == null) {
 			rbInsert = new JRadioButton("입력");
+			rbInsert.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					screenPartition();
+				}
+			});
 			buttonGroup.add(rbInsert);
 			rbInsert.setBounds(36, 22, 54, 23);
 		}
@@ -136,6 +151,11 @@ public class Main extends JFrame {
 	private JRadioButton getRbUpdate() {
 		if (rbUpdate == null) {
 			rbUpdate = new JRadioButton("수정");
+			rbUpdate.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					screenPartition();
+				}
+			});
 			buttonGroup.add(rbUpdate);
 			rbUpdate.setBounds(94, 22, 54, 23);
 		}
@@ -144,6 +164,12 @@ public class Main extends JFrame {
 	private JRadioButton getRbDelete() {
 		if (rbDelete == null) {
 			rbDelete = new JRadioButton("삭제");
+			rbDelete.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					screenPartition();
+					
+				}
+			});
 			buttonGroup.add(rbDelete);
 			rbDelete.setBounds(152, 22, 54, 23);
 		}
@@ -152,6 +178,11 @@ public class Main extends JFrame {
 	private JRadioButton getRbQuery() {
 		if (rbQuery == null) {
 			rbQuery = new JRadioButton("검색");
+			rbQuery.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					screenPartition();
+				}
+			});
 			rbQuery.setSelected(true);
 			buttonGroup.add(rbQuery);
 			rbQuery.setBounds(210, 22, 54, 23);
@@ -161,6 +192,11 @@ public class Main extends JFrame {
 	private JComboBox getCbSelcetion() {
 		if (cbSelcetion == null) {
 			cbSelcetion = new JComboBox();
+			cbSelcetion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					conditionQuery();
+				}
+			});
 			cbSelcetion.setModel(new DefaultComboBoxModel(new String[] {"이름", "주소", "관계"}));
 			cbSelcetion.setBounds(36, 62, 91, 29);
 		}
@@ -177,6 +213,12 @@ public class Main extends JFrame {
 	private JButton getBtnQuery() {
 		if (btnQuery == null) {
 			btnQuery = new JButton("검색");
+			btnQuery.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					conditionQueryAction();
+				
+				}
+			});
 			btnQuery.setBounds(401, 62, 74, 29);
 		}
 		return btnQuery;
@@ -192,6 +234,12 @@ public class Main extends JFrame {
 	private JTable getInnerTable() {
 		if (innerTable == null) {
 			innerTable = new JTable();
+			innerTable.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					tableClick();
+				}
+			});
 			// singletable 정의
 			innerTable.setModel(outerTable);
 		}
@@ -292,6 +340,12 @@ public class Main extends JFrame {
 	private JButton getBtnOk() {
 		if (btnOk == null) {
 			btnOk = new JButton("OK");
+			btnOk.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					actionPartition();
+					
+				}
+			});
 			btnOk.setEnabled(false);
 			btnOk.setBounds(401, 461, 74, 27);
 		}
@@ -366,16 +420,261 @@ public class Main extends JFrame {
 		
 		
 		}
+		tfCount.setText(Integer.toString(listCount));
+	}
+	// 테이블 클릭
+	private void tableClick() {
+		
+		int i = innerTable.getSelectedRow();			// 줄수 알려주기
+		String wkSequence = (String) innerTable.getValueAt(i, 0);
+		int wkSeqno = Integer.parseInt(wkSequence);  // 다우에 스퀀스넘버 보내기
+		
+		Dao dao = new Dao(wkSeqno);
+		Dto dto = dao.tableClick();
+		
+		tfSeqNo.setText(Integer.toString(dto.getSeqno()));
+		tfName.setText(dto.getName());
+		tfTelno.setText(dto.getTelno());
+		tfAddress.setText(dto.getAddress());
+		tfEmail.setText(dto.getEmail());
+		tfRelation.setText(dto.getRelation());
+		
+		if(rbUpdate.isSelected()){
+			tfName.setEditable(true);
+			tfTelno.setEditable(true);
+			tfAddress.setEditable(true);
+			tfEmail.setEditable(true);
+			tfRelation.setEditable(true);
+			btnOk.setVisible(true);	
+			btnOk.setEnabled(true);
+		}
+		
+		if(rbDelete.isSelected()) {
+			tfName.setEditable(false);
+			tfTelno.setEditable(false);
+			tfAddress.setEditable(false);
+			tfEmail.setEditable(false);
+			tfRelation.setEditable(false);
+			btnOk.setVisible(true);	
+			btnOk.setEnabled(true);
+		}
+		
+		
+		}
+		
+	
+	// screenPartition
+	
+	private void screenPartition() {
+		// 검색의 경우
+		if(rbQuery.isSelected()) {
+			tfName.setEditable(false);
+			tfTelno.setEditable(false);
+			tfAddress.setEditable(false);
+			tfEmail.setEditable(false);
+			tfRelation.setEditable(false);
+			btnOk.setVisible(false);
+		}
+		
+		// 입력의 경우
+		if(rbInsert.isSelected()) {
+			tfName.setEditable(true);
+			tfTelno.setEditable(true);
+			tfAddress.setEditable(true);
+			tfEmail.setEditable(true);
+			tfRelation.setEditable(true);
+			btnOk.setVisible(true);	
+			btnOk.setEnabled(true);
+		}
+		// 수정이나삭제인경
+			if(rbUpdate.isSelected() || rbDelete.isSelected() ) {
+				tfName.setEditable(false);
+				tfTelno.setEditable(false);
+				tfAddress.setEditable(false);
+				tfEmail.setEditable(false);
+				tfRelation.setEditable(false);
+				btnOk.setVisible(true);	
+				btnOk.setEnabled(false);
+			}
+				
+	}
+	
+	// ok버튼
+	private void actionPartition() {
+		// 입력인 경우
+		if(rbInsert.isSelected()) {
+			insertFieldCheck();
+			int i_chk = insertFieldCheck();
+			if(i_chk == 0) {
+				insertAction();
+				tableInit();
+				serchActeion();
+				clearColumn();
+				
+			}else {
+				JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + message + "확인하세요!");
+			}
+		}
+		// 수정인 경우
+			if(rbUpdate.isSelected()) {
+				insertFieldCheck();
+				int i_cnk = insertFieldCheck();
+				if(i_cnk == 0) {
+					updateAction();
+					tableInit();
+					serchActeion();
+					clearColumn();
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "주소록 정보 수정!\n" + message + "확인하세요!");
+				}
+			}
+		// 삭제인 경우
+			if(rbDelete.isSelected()) {
+				insertFieldCheck();
+				int i_cnk = insertFieldCheck();
+				if(i_cnk == 0) {
+					deleteAction();
+					tableInit();
+					serchActeion();
+					clearColumn();
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "주소록 정보 삭제!\n" + message + "확인하세요!");
+			}
+			}
+	}
+		
+	private int insertFieldCheck() {
+		int i = 0;
+		
+		if(tfName.getText().trim().length() == 0) {			 // 공백없애기 위해 trim 필수
+			i++;
+			message = "이름을 ";
+			tfName.requestFocus();
+		}
+		if(tfTelno.getText().trim().length() == 0) {
+			i++;
+			message = "전화번호를 ";
+			tfTelno.requestFocus();
+		}
+		if(tfAddress.getText().trim().length() == 0) {
+			i++;
+			message = "주소를 ";
+			tfAddress.requestFocus();
+		}
+		if(tfEmail.getText().trim().length() == 0) {
+			i++;
+			message = "전자우편을 ";
+			tfEmail.requestFocus();
+		}
+		if(tfRelation.getText().trim().length() == 0) {
+			i++;
+			message = "관계를 ";
+			tfRelation.requestFocus();
+		}
+		
+		
+		
+		return i;
+	}
+
+	private void clearColumn() {
+		tfSeqNo.setText("");
+		tfName.setText("");
+		tfTelno.setText("");
+		tfAddress.setText("");
+		tfEmail.setText("");
+		tfRelation.setText("");
+	}	
+	
+	
+	private void insertAction() {
+		String name = tfName.getText();
+		String telno = tfTelno.getText();
+		String address = tfAddress.getText();
+		String email = tfEmail.getText();
+		String relation = tfRelation.getText();
+		
+		Dao dao = new Dao(name, telno, address, email, relation);
+		boolean result = dao.insertAction();
+		
+		if(result) {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + tfName.getText() + "님의 정보가 입력 되었습니다.","주소록 정보", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + "입력중 문제가 발생했습니다. \n관리자에게 문의하세요!", "주소록 정보", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	// 수정
+	private void updateAction() {
+		String name = tfName.getText();
+		String telno = tfTelno.getText();
+		String address = tfAddress.getText();
+		String email = tfEmail.getText();
+		String relation = tfRelation.getText();
+		String wkequence = tfSeqNo.getText();
+		int wkSeqno = Integer.parseInt(wkequence);
+		
+		Dao dao = new Dao(wkSeqno, name, telno, address, email, relation);
+		boolean result = dao.updateAction();
+		
+		if(result) {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + tfName.getText() + "님의 정보가 변경 되었습니다.","주소록 정보", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + "입력중 문제가 발생했습니다. \n관리자에게 문의하세요!", "주소록 정보", JOptionPane.ERROR_MESSAGE);
+		}
 		
 	}
 	
+	private void deleteAction() {
+		
+		String wkequence = tfSeqNo.getText();
+		int wkSeqno = Integer.parseInt(wkequence);
+		
+		Dao dao = new Dao(wkSeqno);
+		boolean result = dao.deleteAction();
+		
+		if(result) {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + tfName.getText() + "님의 정보가 삭제 되었습니다.","주소록 정보", JOptionPane.INFORMATION_MESSAGE);
+		}else {
+			JOptionPane.showMessageDialog(this, "주소록 정보 입력!\n" + "입력중 문제가 발생했습니다. \n관리자에게 문의하세요!", "주소록 정보", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	private void conditionQuery() {
+		int i = cbSelcetion.getSelectedIndex();
+		String conditionQueryColumn = "";
+		switch(i) {
+		case 0:
+			conditionQueryColumn = "name";
+			break;
+		case 1:
+			conditionQueryColumn = "address";
+			break;
+		case 2:
+			conditionQueryColumn = "relation";
+			break;
+		default:
+			break;
+		}
+		tableInit();
+		clearColumn();
+		conditionQueryAction(conditionQueryColumn);
+	}
+
+	private void conditionQueryAction(String conditionQueryColumn) {
+		Dao dao = new Dao(conditionQueryColumn, tfSelcetion.getText());
+		ArrayList<Dto> dtoList = dao.conditionList();
+		int listCount = dtoList.size();
+		
+		for(int i = 0; i < listCount; i++) {
+			String temp = Integer.toString(dtoList.get(i).getSeqno());		// 2차원이라.두개로 빼오기
+			String[] qTxt = {temp, dtoList.get(i).getName(), dtoList.get(i).getTelno(), 
+					dtoList.get(i).getRelation()};
+			outerTable.addRow(qTxt); 	// 테이블에 값 넣기
+		
+	}
+	}
 }

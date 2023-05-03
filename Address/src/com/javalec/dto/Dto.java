@@ -26,6 +26,18 @@ public class Dto {
 		this.relation = relation;
 	}
 
+	
+
+	// 화면클릭용
+	public Dto(int seqno, String name, String telno, String address, String email, String relation) {
+		super();
+		this.seqno = seqno;
+		this.name = name;
+		this.telno = telno;
+		this.address = address;
+		this.email = email;
+		this.relation = relation;
+	}
 
 
 
